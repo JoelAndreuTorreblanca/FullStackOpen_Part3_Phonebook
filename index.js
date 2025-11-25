@@ -4,26 +4,26 @@ const app = express();
 app.use(express.json()); // Sin esto, 'request.body' no estaría definida
 
 let persons = [
-    { 
-      "id": 1,
-      "name": "Arto Hellas", 
-      "number": "040-123456"
-    },
-    { 
-      "id": 2,
-      "name": "Ada Lovelace",
-      "number": "39-44-5323523"
-    },
-    { 
-      "id": 3,
-      "name": "Dan Abramov", 
-      "number": "12-43-234345"
-    },
-    { 
-      "id": 4,
-      "name": "Mary Poppendieck", 
-      "number": "39-23-6423122"
-    }
+  { 
+    "id": 1,
+    "name": "Arto Hellas", 
+    "number": "040-123456"
+  },
+  { 
+    "id": 2,
+    "name": "Ada Lovelace",
+    "number": "39-44-5323523"
+  },
+  { 
+    "id": 3,
+    "name": "Dan Abramov", 
+    "number": "12-43-234345"
+  },
+  { 
+    "id": 4,
+    "name": "Mary Poppendieck", 
+    "number": "39-23-6423122"
+  }
 ];
 
 const getRandomId = () => {
@@ -69,7 +69,20 @@ app.post('/api/persons', (request, response) => {
 
   if(!person.name){
     return response.status(400).json({
-      error: "Name missing"
+      error: "Name is missing"
+    });
+  }
+
+  if(!person.number){
+    return response.status(400).json({
+      error: "Number is missing"
+    });
+  }
+
+  const therIsCoincidence = persons.find(pers => pers.name.toLowerCase() == person.name.toLowerCase());
+  if(therIsCoincidence){
+    return response.status(409).json({
+      error: `A person named '${person.name}' already exists in Phonebook`
     });
   }
 
