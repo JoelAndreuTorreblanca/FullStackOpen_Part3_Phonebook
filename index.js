@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 
+app.use(express.json()); // Sin esto, 'request.body' no estaría definida
+
 let persons = [
     { 
       "id": 1,
@@ -9,7 +11,7 @@ let persons = [
     },
     { 
       "id": 2,
-      "name": "Ada Lovelace", 
+      "name": "Ada Lovelace",
       "number": "39-44-5323523"
     },
     { 
@@ -23,6 +25,11 @@ let persons = [
       "number": "39-23-6423122"
     }
 ];
+
+const getRandomId = () => {
+  const max = 99999;
+  return Math.floor(Math.random() * max);
+}
 
 // Rutas
 app.get('/api/persons', (request, response) => {
@@ -56,6 +63,26 @@ app.delete('/api/persons/:id', (request, response) => {
 
   response.status(204).end();
 })
+
+app.post('/api/persons', (request, response) => {
+  const person = request.body;
+
+  if(!person.name){
+    return response.status(400).json({
+      error: "Name missing"
+    });
+  }
+
+  const newPerson = {
+    name: person.name,
+    number: person.number,
+    id: getRandomId()
+  };
+
+  persons = persons.concat(newPerson);
+
+  response.json(newPerson);
+});
 
 const PORT = 3001;
 app.listen(PORT, () => {
