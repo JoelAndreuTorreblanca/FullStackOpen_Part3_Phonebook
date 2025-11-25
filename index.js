@@ -1,7 +1,9 @@
 const express = require('express');
+const morgan = require('morgan');
 const app = express();
 
-app.use(express.json()); // Sin esto, 'request.body' no estaría definida
+app.use(express.json()); // Esto un middleware. Sin esto, 'request.body' no estaría definida.
+app.use(morgan('tiny')); // Es un middleware.
 
 let persons = [
   { 
