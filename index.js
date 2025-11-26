@@ -6,8 +6,10 @@ morgan.token('info', function getId (req) {
   return JSON.stringify(req.body);
 })
 
-app.use(express.json()); // Esto un middleware. Sin esto, 'request.body' no estaría definida.
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :info')); // Es un middleware.
+// Middlewares
+app.use(express.json()); // Sin esto, 'request.body' no estaría definida.
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :info'));
+app.use(express.static('dist'))
 
 let persons = [
   { 
