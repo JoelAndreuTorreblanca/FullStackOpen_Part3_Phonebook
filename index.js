@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const app = express();
+const cors = require('cors');
 
 morgan.token('info', function getId (req) {
   return JSON.stringify(req.body);
@@ -9,7 +10,7 @@ morgan.token('info', function getId (req) {
 // Middlewares
 app.use(express.json()); // Sin esto, 'request.body' no estaría definida.
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :info'));
-app.use(express.static('dist'))
+app.use(cors());
 
 let persons = [
   { 
