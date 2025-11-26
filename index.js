@@ -2,8 +2,12 @@ const express = require('express');
 const morgan = require('morgan');
 const app = express();
 
+morgan.token('info', function getId (req) {
+  return JSON.stringify(req.body);
+})
+
 app.use(express.json()); // Esto un middleware. Sin esto, 'request.body' no estaría definida.
-app.use(morgan('tiny')); // Es un middleware.
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :info')); // Es un middleware.
 
 let persons = [
   { 
